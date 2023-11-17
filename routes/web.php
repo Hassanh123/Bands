@@ -14,6 +14,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+use App\Http\Controllers\BandsController;
+use App\Http\Controllers\AlbumsController;
+
+Route::resources([
+    'bands' => BandsController::class,
+    'albums' => AlbumsController::class,
+
+]);
+Route::delete('/bands/{id}', [BandsController::class, 'destroy'])->name('bands.destroy');
+Route::post('/bands', [BandsController::class, 'store'])->name('bands.store');
+Route::post('/albums', [AlbumsController::class, 'store'])->name('albums.store');
+
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -22,10 +35,5 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
 require __DIR__.'/auth.php';
